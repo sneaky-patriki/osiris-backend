@@ -551,4 +551,4 @@ APP.register_error_handler(Exception, default_handler)
 if __name__ == '__main__':
     database.read()
     # print(database.active_tokens)
-    APP.run(port=8080)
+    APP.run(port=5000)
