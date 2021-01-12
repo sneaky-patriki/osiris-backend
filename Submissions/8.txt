@@ -1,0 +1,19 @@
+Input	Initial	Has	Number	AvgTime	AvgTime
+Size	Order	Dups	of runs	forusel	forsort
+5000	random	no	5	0.036	0.007
+5000	sorted	no	5	0.058	0.007
+5000	reverse	no	5	0.036	0.007
+5000	random	yes	5	0.035	0.008
+5000	sorted	yes	5	0.058	0.029
+5000	reverse	yes	5	0.005	0.029
+10000	random	no	9	0.604   0.004
+10000	sorted	no	9	0.457   0.000
+10000	reverse	no	9	0.220	0.002
+10000	random	yes	9	0.589	0.004
+10000	sorted	yes	9	0.456	0.002
+10000	reverse	yes	9	0.220	0.002
+
+The variation in timing between isIntList and sort occurs due to the way that the two programs sort the list of numbers given.
+Because isIntList takes a single number at a time and inserts it into a pre-existing list, it uses an insertion method to sort
+the numbers (aka an Insertion Sort). This runs at worst in a time of O(n^2) or the number of items in the list squared. It is assumed
+that the sort command uses a faster sorting algorithm (e.g. quicksort or merge sort) which runs in a time of O(n log n) or similar.
