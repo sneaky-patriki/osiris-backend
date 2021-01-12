@@ -14,8 +14,8 @@ import attachments
 import classes
 import submissions
 
-APP = Flask(__name__)
-CORS(APP)
+app = Flask(__name__)
+CORS(app)
 
 def default_handler(err):
 
@@ -29,7 +29,7 @@ def default_handler(err):
 
     return response
 
-@APP.route('/auth/login', methods=['POST'])
+@app.route('/auth/login', methods=['POST'])
 def login():
     payload = request.json
     username = payload['username']
@@ -37,34 +37,34 @@ def login():
 
     return dumps(auth.login(username, password))
 
-@APP.route('/auth/logout', methods=['POST'])
+@app.route('/auth/logout', methods=['POST'])
 def logout():
     payload = request.json
     token = payload['token']
 
     return dumps(auth.logout(token))
 
-@APP.route('/users/teachers/other', methods=['GET'])
+@app.route('/users/teachers/other', methods=['GET'])
 def teachers_other():
     token = request.args.get('token')
     class_id = int(request.args.get('class_id'))
 
     return dumps(users.other_teachers(token, class_id))
 
-@APP.route('/users/students/other', methods=['GET'])
+@app.route('/users/students/other', methods=['GET'])
 def students_other():
     token = request.args.get('token')
     class_id = int(request.args.get('class_id'))
 
     return dumps(users.other_students(token, class_id))
 
-@APP.route('/users/listall', methods=['GET'])
+@app.route('/users/listall', methods=['GET'])
 def students_listall():
     token = request.args.get('token')
 
     return dumps(users.listall(token))
 
-@APP.route('/users/delete', methods=['DELETE'])
+@app.route('/users/delete', methods=['DELETE'])
 def students_delete():
     payload = request.json
     token = payload['token']
@@ -74,7 +74,7 @@ def students_delete():
 
     return dumps({})
 
-@APP.route('/users/import', methods=['POST'])
+@app.route('/users/import', methods=['POST'])
 def users_import():
     payload = request.form
     token = payload['token']
@@ -86,7 +86,7 @@ def users_import():
 
     return dumps(users.import_users(token, user_type, file))
 
-@APP.route('/user/password', methods=['PUT'])
+@app.route('/user/password', methods=['PUT'])
 def user_password():
     payload = request.json
     token = payload['token']
@@ -96,25 +96,25 @@ def user_password():
 
     return dumps(users.update_password(token, old, new, confirm))
 
-@APP.route('/classes/teacher', methods=['GET'])
+@app.route('/classes/teacher', methods=['GET'])
 def classes_teacher():
     token = request.args.get('token')
 
     return dumps(classes.teacher_classes(token))
 
-@APP.route('/classes/student', methods=['GET'])
+@app.route('/classes/student', methods=['GET'])
 def classes_student():
     token = request.args.get('token')
 
     return dumps(classes.student_classes(token))
 
-@APP.route('/topics/list', methods=['GET'])
+@app.route('/topics/list', methods=['GET'])
 def topics_list():
     token = request.args.get('token')
 
     return dumps(topics.listall(token))
 
-@APP.route('/topics/add', methods=['POST'])
+@app.route('/topics/add', methods=['POST'])
 def topics_add():
     payload = request.json
     token = payload['token']
@@ -122,7 +122,7 @@ def topics_add():
 
     return dumps(topics.add(token, name))
 
-@APP.route('/topics/edit', methods=['PUT'])
+@app.route('/topics/edit', methods=['PUT'])
 def topics_edit():
     payload = request.json
     token = payload['token']
@@ -131,7 +131,7 @@ def topics_edit():
 
     return dumps(topics.edit(token, topic_id, name))
 
-@APP.route('/topics/delete', methods=['DELETE'])
+@app.route('/topics/delete', methods=['DELETE'])
 def topics_delete():
     payload = request.json
     token = payload['token']
@@ -141,13 +141,13 @@ def topics_delete():
 
     return dumps({})
 
-@APP.route('/topics/details', methods=['GET'])
+@app.route('/topics/details', methods=['GET'])
 def topic_details():
     token = request.args.get('token')
     topic_id = int(request.args.get('topic_id'))
     return dumps(topics.details(token, topic_id))
 
-@APP.route('/taskgroups/add', methods=['POST'])
+@app.route('/taskgroups/add', methods=['POST'])
 def taskgroups_add():
     payload = request.json
     token = payload['token']
@@ -157,7 +157,7 @@ def taskgroups_add():
 
     return dumps(taskgroups.add(token, topic_id, name, submit_multiple))
 
-@APP.route('/taskgroups/edit', methods=['PUT'])
+@app.route('/taskgroups/edit', methods=['PUT'])
 def taskgroups_edit():
     payload = request.json
     token = payload['token']
@@ -166,7 +166,7 @@ def taskgroups_edit():
 
     return dumps(taskgroups.edit(token, taskgroup_id, name))
 
-@APP.route('/taskgroups/delete', methods=['DELETE'])
+@app.route('/taskgroups/delete', methods=['DELETE'])
 def taskgroups_delete():
     payload = request.json
     token = payload['token']
@@ -176,7 +176,7 @@ def taskgroups_delete():
 
     return dumps({})
 
-@APP.route('/taskgroups/reorder', methods=['PUT'])
+@app.route('/taskgroups/reorder', methods=['PUT'])
 def taskgroups_reorder():
     payload = request.json
     token = payload['token']
@@ -185,7 +185,7 @@ def taskgroups_reorder():
 
     return dumps(taskgroups.reorder(token, topic_id, new_order))
 
-@APP.route('/taskgroups/move', methods=['PUT'])
+@app.route('/taskgroups/move', methods=['PUT'])
 def taskgroups_move():
     payload = request.json
     token = payload['token']
@@ -194,14 +194,14 @@ def taskgroups_move():
 
     return dumps(taskgroups.move(token, taskgroup_id, new_topic_id))
 
-@APP.route('/taskgroups/details', methods=['GET'])
+@app.route('/taskgroups/details', methods=['GET'])
 def taskgroups_details():
     token = request.args.get('token')
     taskgroup_id = int(request.args.get('taskgroup_id'))
 
     return dumps(taskgroups.details(token, taskgroup_id))
 
-@APP.route('/tasks/add', methods=['POST'])
+@app.route('/tasks/add', methods=['POST'])
 def tasks_add():
     payload = request.json
     token = payload['token']
@@ -215,14 +215,14 @@ def tasks_add():
 
     return dumps(tasks.add(token, taskgroup_id, name, difficulty, type, description, hint, solution))
 
-@APP.route('/tasks/details', methods=['GET'])
+@app.route('/tasks/details', methods=['GET'])
 def tasks_details():
     token = request.args.get('token')
     task_id = int(request.args.get('task_id'))
 
     return dumps(tasks.details(token, task_id))
 
-@APP.route('/tasks/edit', methods=['PUT'])
+@app.route('/tasks/edit', methods=['PUT'])
 def tasks_edit():
     payload = request.json
     token = payload['token']
@@ -237,7 +237,7 @@ def tasks_edit():
 
     return dumps(tasks.edit(token, task_id, name, difficulty, description, hint, solution, choices, correct_answers))
 
-@APP.route('/tasks/delete', methods=['DELETE'])
+@app.route('/tasks/delete', methods=['DELETE'])
 def tasks_delete():
     payload = request.json
     token = payload['token']
@@ -247,7 +247,7 @@ def tasks_delete():
 
     return dumps({})
 
-@APP.route('/tasks/reorder', methods=['PUT'])
+@app.route('/tasks/reorder', methods=['PUT'])
 def tasks_reorder():
     payload = request.json
     token = payload['token']
@@ -257,7 +257,7 @@ def tasks_reorder():
 
     return dumps(tasks.reorder(token, taskgroup_id, new_tasks))
 
-@APP.route('/tasks/move', methods=['PUT'])
+@app.route('/tasks/move', methods=['PUT'])
 def tasks_move():
     payload = request.json
     token = payload['token']
@@ -266,20 +266,20 @@ def tasks_move():
 
     return dumps(tasks.move(token, task_id, new_taskgroup_id))
 
-@APP.route('/tasks/attachments', methods=['GET'])
+@app.route('/tasks/attachments', methods=['GET'])
 def attachments_list():
     token = request.args.get('token')
     task_id = int(request.args.get('task_id'))
 
     return dumps(attachments.listall(token, task_id))
 
-@APP.route('/tasks/attachments/retrieve', methods=['GET'])
+@app.route('/tasks/attachments/retrieve', methods=['GET'])
 def attachments_retrieve():
     attachment_id = int(request.args.get('attachment_id'))
 
     return attachments.retrieve(attachment_id)
 
-@APP.route('/tasks/attachments/add', methods=['POST'])
+@app.route('/tasks/attachments/add', methods=['POST'])
 def attachments_add():
     payload = request.form
     token = payload['token']
@@ -290,7 +290,7 @@ def attachments_add():
         raise Exception
     return dumps(attachments.add(token, task_id, cover_name, attachment))
 
-@APP.route('/tasks/attachments/delete', methods=['DELETE'])
+@app.route('/tasks/attachments/delete', methods=['DELETE'])
 def attachments_delete():
     payload = request.json
     token = payload['token']
@@ -300,13 +300,13 @@ def attachments_delete():
 
     return dumps({})
 
-@APP.route('/courses/list', methods=['GET'])
+@app.route('/courses/list', methods=['GET'])
 def courses_list():
     token = request.args.get('token')
 
     return dumps(courses.listall(token))
 
-@APP.route('/courses/add', methods=['POST'])
+@app.route('/courses/add', methods=['POST'])
 def courses_add():
     payload = request.json
     token = payload['token']
@@ -314,7 +314,7 @@ def courses_add():
 
     return dumps(courses.add(token, name))
 
-@APP.route('/courses/edit', methods=['PUT'])
+@app.route('/courses/edit', methods=['PUT'])
 def courses_edit():
     payload = request.json
     token = payload['token']
@@ -323,7 +323,7 @@ def courses_edit():
 
     return dumps(courses.edit(token, course_id, name))
 
-@APP.route('/courses/delete', methods=['DELETE'])
+@app.route('/courses/delete', methods=['DELETE'])
 def courses_delete():
     payload = request.json
     token = payload['token']
@@ -333,14 +333,14 @@ def courses_delete():
 
     return dumps({})
 
-@APP.route('/courses/details', methods=['GET'])
+@app.route('/courses/details', methods=['GET'])
 def courses_details():
     token = request.args.get('token')
     course_id = int(request.args.get('course_id'))
 
     return dumps(courses.details(token, course_id))
 
-@APP.route('/courses/details/class', methods=['GET'])
+@app.route('/courses/details/class', methods=['GET'])
 def courses_details_class():
     token = request.args.get('token')
     course_id = int(request.args.get('course_id'))
@@ -348,7 +348,7 @@ def courses_details_class():
 
     return dumps(courses.details(token, course_id, class_id))
 
-@APP.route('/courses/topics/add', methods=['POST'])
+@app.route('/courses/topics/add', methods=['POST'])
 def courses_topics_add():
     payload = request.json
     token = payload['token']
@@ -358,7 +358,7 @@ def courses_topics_add():
 
     return dumps(courses.add_topic(token, course_id, topic_id, name))
 
-@APP.route('/courses/topics/rename', methods=['PUT'])
+@app.route('/courses/topics/rename', methods=['PUT'])
 def courses_topics_rename():
     payload = request.json
     token = payload['token']
@@ -367,7 +367,7 @@ def courses_topics_rename():
 
     return dumps(courses.rename_topic(token, module_id, name))
 
-@APP.route('/courses/topics/remove', methods=['DELETE'])
+@app.route('/courses/topics/remove', methods=['DELETE'])
 def courses_topics_remove():
     payload = request.json
     token = payload['token']
@@ -375,7 +375,7 @@ def courses_topics_remove():
 
     return dumps(courses.remove_topic(token, module_id))
 
-@APP.route('/courses/topics/reorder', methods=['PUT'])
+@app.route('/courses/topics/reorder', methods=['PUT'])
 def courses_topics_reorder():
     payload = request.json
     token = payload['token']
@@ -384,13 +384,13 @@ def courses_topics_reorder():
 
     return dumps(courses.reorder_topics(token, course_id, new_topics_order))
 
-@APP.route('/classes/list', methods=['GET'])
+@app.route('/classes/list', methods=['GET'])
 def classes_list():
     token = request.args.get('token')
 
     return dumps(classes.listall(token))
 
-@APP.route('/classes/add', methods=['POST'])
+@app.route('/classes/add', methods=['POST'])
 def classes_add():
     payload = request.json
     token = payload['token']
@@ -400,7 +400,7 @@ def classes_add():
 
     return dumps(classes.add(token, name, course, year))
 
-@APP.route('/classes/edit', methods=['PUT'])
+@app.route('/classes/edit', methods=['PUT'])
 def classes_edit():
     payload = request.json
     token = payload['token']
@@ -411,7 +411,7 @@ def classes_edit():
 
     return dumps(classes.edit(token, class_id, name, year, teachers))
 
-@APP.route('/classes/delete', methods=['DELETE'])
+@app.route('/classes/delete', methods=['DELETE'])
 def classes_delete():
     payload = request.json
     token = payload['token']
@@ -421,14 +421,14 @@ def classes_delete():
 
     return dumps({})
 
-@APP.route('/classes/details', methods=['GET'])
+@app.route('/classes/details', methods=['GET'])
 def classes_details():
     token = request.args.get('token')
     class_id = int(request.args.get('class_id'))
 
     return dumps(classes.details(token, class_id))
 
-@APP.route('/classes/topic/details', methods=['GET'])
+@app.route('/classes/topic/details', methods=['GET'])
 def classes_topic_details():
     token = request.args.get('token')
     class_id = int(request.args.get('class_id'))
@@ -436,7 +436,7 @@ def classes_topic_details():
 
     return dumps(classes.topic_details(token, class_id, topic_id))
 
-@APP.route('/classes/taskgroup/details', methods=['GET'])
+@app.route('/classes/taskgroup/details', methods=['GET'])
 def classes_taskgroup_details():
     token = request.args.get('token')
     class_id = int(request.args.get('class_id'))
@@ -444,7 +444,7 @@ def classes_taskgroup_details():
 
     return dumps(classes.taskgroup_details(token, class_id, taskgroup_id))
 
-@APP.route('/classes/enrolments/add', methods=['POST'])
+@app.route('/classes/enrolments/add', methods=['POST'])
 def enrolments_add():
     payload = request.json
     token = payload['token']
@@ -453,7 +453,7 @@ def enrolments_add():
 
     return dumps(classes.add_enrolment(token, class_id, username))
 
-@APP.route('/classes/enrolments/remove', methods=['DELETE'])
+@app.route('/classes/enrolments/remove', methods=['DELETE'])
 def enrolments_remove():
     payload = request.json
     token = payload['token']
@@ -463,7 +463,7 @@ def enrolments_remove():
 
     return dumps({})
 
-@APP.route('/classes/enrolments/import', methods=['POST'])
+@app.route('/classes/enrolments/import', methods=['POST'])
 def enrolments_import():
     payload = request.form
     token = payload['token']
@@ -475,14 +475,14 @@ def enrolments_import():
 
     return dumps(classes.import_enrolments(token, class_id, file))
 
-@APP.route('/courses/submissions', methods=['GET'])
+@app.route('/courses/submissions', methods=['GET'])
 def submissions_list():
     token = request.args.get('token')
     course_id = int(request.args.get('course_id'))
 
     return dumps(submissions.listall(token, course_id))
 
-@APP.route('/courses/submissions/student', methods=['GET'])
+@app.route('/courses/submissions/student', methods=['GET'])
 def submissions_list_student():
     token = request.args.get('token')
     course_id = int(request.args.get('course_id'))
@@ -490,14 +490,14 @@ def submissions_list_student():
 
     return dumps(submissions.listall(token, course_id, student_id))
 
-@APP.route('/submissions/details', methods=['GET'])
+@app.route('/submissions/details', methods=['GET'])
 def tasks_submissions():
     token = request.args.get('token')
     submission_id = int(request.args.get('submission_id'))
 
     return dumps(submissions.details(token, submission_id))
 
-@APP.route('/tasks/submit', methods=['POST'])
+@app.route('/tasks/submit', methods=['POST'])
 def submit():
     payload = request.form
     token = payload['token']
@@ -520,14 +520,14 @@ def submit():
 
     return dumps(submissions.submit(token, tasks, files))
 
-@APP.route('/tasks/submissions/retrieve', methods=['GET'])
+@app.route('/tasks/submissions/retrieve', methods=['GET'])
 def retrieve_submission():
     submission_id = int(request.args.get('submission_id'))
     file_num = int(request.args.get('filenum'))
 
     return submissions.retrieve(submission_id, file_num)
 
-@APP.route('/submissions/mark', methods=['PUT'])
+@app.route('/submissions/mark', methods=['PUT'])
 def mark_submission():
     payload = request.json
     token = payload['token']
@@ -536,7 +536,7 @@ def mark_submission():
 
     return dumps(submissions.mark(token, submission_id, status))
 
-@APP.route('/submissions/comment', methods=['POST'])
+@app.route('/submissions/comment', methods=['POST'])
 def comment_submission():
     payload = request.json
     token = payload['token']
@@ -545,10 +545,10 @@ def comment_submission():
 
     return dumps(submissions.add_comment(token, submission_id, comment))
 
-APP.config['TRAP_HTTP_EXCEPTIONS'] = True
-APP.register_error_handler(Exception, default_handler)
+app.config['TRAP_HTTP_EXCEPTIONS'] = True
+app.register_error_handler(Exception, default_handler)
 
 if __name__ == '__main__':
     database.read()
     # print(database.active_tokens)
-    APP.run(port=5000)
+    app.run(port=5000)
