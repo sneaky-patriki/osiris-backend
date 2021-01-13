@@ -29,6 +29,12 @@ def default_handler(err):
 
     return response
 
+@app.before_first_request
+def start():
+    database.read()
+    print('Starting....')
+    print(database.users)
+
 @app.route('/auth/login', methods=['POST'])
 def login():
     payload = request.json
@@ -548,10 +554,6 @@ def comment_submission():
 
 app.config['TRAP_HTTP_EXCEPTIONS'] = True
 app.register_error_handler(Exception, default_handler)
-
-database.read()
-print('Starting....')
-print(database.users)
 
 if __name__ == '__main__':
     # print(database.active_tokens)
