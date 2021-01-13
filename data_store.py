@@ -50,6 +50,7 @@ class Data_Store(object):
             self.submissions = [Submission(item['submission_id'], item['tasks'], item['student'], item['time'], item['comment'], item['status'], files=item['files'], selected_answer=['selected_answer']) for item in data['submissions']]
 
             self.active_tokens = data['active_tokens']
+            print('Active tokens have been reset')
             self.next_id = data['next_id']
 
     def update(self):
