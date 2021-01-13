@@ -15,8 +15,8 @@ class Data_Store(object):
         self.next_id = {}
 
     def authenticate_user(self, username, hashed_password):
+        print(self.users)
         for user in self.users:
-            print(user.username, user.password, hashed_password)
             if user.username == username and user.password == hashed_password:
                 return user.user_type
         return False
@@ -28,6 +28,7 @@ class Data_Store(object):
     def read(self):
         with open('data_store.json', 'r') as FILE:
             data = loads(FILE.read())
+            print(data)
 
             for item in data['users']:
                 self.users.append(User(item['username'], item['password'], item['user_type'], item['name'], item['classes']))
