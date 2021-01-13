@@ -34,6 +34,7 @@ def login():
     payload = request.json
     username = payload['username']
     password = payload['password']
+    print(username, password)
 
     return dumps(auth.login(username, password))
 
