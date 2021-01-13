@@ -7,6 +7,7 @@ from error import AccessError, InputError
 def generate_token(username):
     token = str(uuid4())
     database.active_tokens[token] = username
+    database.update()
     return token
 
 def login(username, password):
