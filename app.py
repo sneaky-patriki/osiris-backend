@@ -549,9 +549,10 @@ def comment_submission():
 app.config['TRAP_HTTP_EXCEPTIONS'] = True
 app.register_error_handler(Exception, default_handler)
 
+database.read()
+print('Starting....')
+print(database.users)
+
 if __name__ == '__main__':
-    database.read()
-    print('Starting....')
-    print(database.users)
     # print(database.active_tokens)
     app.run(port=5000)
