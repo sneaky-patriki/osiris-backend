@@ -16,6 +16,7 @@ class Data_Store(object):
 
     def authenticate_user(self, username, hashed_password):
         for user in self.users:
+            print(user.username, user.password, hashed_password)
             if user.username == username and user.password == hashed_password:
                 return user.user_type
         return False
