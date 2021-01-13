@@ -33,6 +33,7 @@ class Data_Store(object):
             data = loads(FILE.read())
             print(data)
 
+            self.users = []
             for item in data['users']:
                 self.users.append(User(item['username'], item['password'], item['user_type'], item['name'], item['classes']))
 
