@@ -550,6 +550,8 @@ app.config['TRAP_HTTP_EXCEPTIONS'] = True
 app.register_error_handler(Exception, default_handler)
 
 if __name__ == '__main__':
-    app.run(port=5000)
     database.read()
+    print('Starting....')
+    print(database.users)
     # print(database.active_tokens)
+    app.run(port=5000)
