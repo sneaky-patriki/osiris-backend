@@ -26,6 +26,7 @@ class Data_Store(object):
             raise AccessError('Unauthorised User')
 
     def read(self):
+        f = open('data_store.json')
         with open('data_store.json', 'r') as FILE:
             data = loads(FILE.read())
             print(data)
