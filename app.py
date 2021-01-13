@@ -35,6 +35,11 @@ def start():
     print('Starting....')
     print(database.users)
 
+@app.before_request
+def getdata():
+    print('Getting most up-to-date data')
+    database.read()
+
 @app.route('/auth/login', methods=['POST'])
 def login():
     payload = request.json
