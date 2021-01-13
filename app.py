@@ -15,7 +15,7 @@ import classes
 import submissions
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 def default_handler(err):
 
