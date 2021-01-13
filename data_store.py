@@ -22,6 +22,7 @@ class Data_Store(object):
         return False
 
     def authorise_user(self, token):
+        print(token in self.active_tokens)
         if token not in self.active_tokens:
             raise AccessError('Unauthorised User')
 
