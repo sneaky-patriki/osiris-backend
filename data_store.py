@@ -48,7 +48,7 @@ class Data_Store(object):
                                 item['hint'], item['solution'], item['attachments'], item['modified'], item['choices'], item['correct_answer']) for item in data['tasks']]
             self.attachments = [Attachment(item['attachment_id'], item['task_id'], item['cover_name'], item['storage_name']) for item in data['attachments']]
             self.classes = [Class(item['class_id'], item['name'], item['course'], item['year'], item['teachers'], item['students']) for item in data['classes']]
-            self.submissions = [Submission(item['submission_id'], item['tasks'], item['student'], item['time'], item['comment'], item['status'], files=item['files'], selected_answer=['selected_answer']) for item in data['submissions']]
+            self.submissions = [Submission(item['submission_id'], item['tasks'], item['student'], item['time'], item['comment'], item['status'], files=item['files'], selected_answer=item['selected_answer']) for item in data['submissions']]
 
             self.active_tokens = data['active_tokens']
             print('Active tokens have been reset')
