@@ -5,7 +5,7 @@ from data_store import database, Attachment
 from error import InputError, AccessError
 
 def add(token, task_id, cover_name, attachment):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for task in database.tasks:
         if task.task_id == task_id:
@@ -25,7 +25,7 @@ def add(token, task_id, cover_name, attachment):
     return {'attachment': {'attachment_id':attachment_id, 'name': cover_name}}
 
 def delete(token, attachment_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for attachment in database.attachments:
         if attachment.attachment_id == attachment_id:
@@ -41,7 +41,7 @@ def delete(token, attachment_id):
     database.update()
 
 def listall(token, task_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     attachments = []
     for attachment in database.attachments:

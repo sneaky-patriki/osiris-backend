@@ -5,7 +5,7 @@ from error import DependencyError
 import hashlib
 
 def other_teachers(token, class_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for c in database.classes:
         if c.class_id == class_id:
@@ -15,7 +15,7 @@ def other_teachers(token, class_id):
             if user.user_type == 'teacher' and user.username not in c.teachers]}
 
 def other_students(token, class_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for c in database.classes:
         if c.class_id == class_id:
@@ -25,7 +25,7 @@ def other_students(token, class_id):
             if user.user_type == 'student' and user.username not in c.students]}
 
 def listall(token):
-    database.authorise_user(token)
+    auth.authorise_user(token)
     students = []
     teachers = []
 
@@ -52,7 +52,7 @@ def listall(token):
     return {'students': students, 'teachers': teachers}
 
 def delete(token, username):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     if database.active_tokens[token] == username:
         raise DependencyError('You cannot delete yourself, nice try.')
@@ -68,7 +68,7 @@ def delete(token, username):
             database.update()
 
 def import_users(token, type, file):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     if not file.filename.endswith('.csv'):
         raise InputError('Values must be a .csv file.')
@@ -94,7 +94,7 @@ def validate_username(username):
     return username
 
 def update_password(token, old, new, confirm):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     username = database.active_tokens[token]
 

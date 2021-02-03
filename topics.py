@@ -1,11 +1,19 @@
 from time import time
 from data_store import database, Topic
+from models import Topic, Course
 from error import InputError, AccessError, DependencyError
 import taskgroups
+import auth
+from models import Topic, Course
 
 def listall(token):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
+    topics = list(Topic.select().dicts())
+    print(topics)
+    for topic in topics:
+        topic['courses'] = []
+    '''
     topics = []
     for topic in database.topics:
         topic_details = topic.json()
@@ -18,22 +26,19 @@ def listall(token):
                         topic_details['courses'].append({'course_id':module.course, 'name':course.name})
 
         topics.append(topic_details)
+    '''
 
     return {'topics': topics, 'currentTime': time()}
 
 def add(token, name):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
-    topic_id = database.generate_id('topic')
+    topic = Topic.create(name=name, modified=time())
 
-    new_topic = Topic(topic_id, name)
-    database.topics.append(new_topic)
-
-    database.update()
-    return {'topic_id':topic_id, 'name':name}
+    return {'topic_id':topic.id, 'name':name}
 
 def delete(token, topic_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
 
     for topic in database.topics:
@@ -50,7 +55,7 @@ def delete(token, topic_id):
     database.update()
 
 def edit(token, topic_id, name):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for topic in database.topics:
         if topic.topic_id == topic_id:
@@ -61,22 +66,21 @@ def edit(token, topic_id, name):
     return {'topic_id':topic_id, 'name':name}
 
 def details(token, topic_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
-    for topic in database.topics:
-        if topic.topic_id == topic_id:
-            topic_details = topic.json()
+    topic_details = Topic.select().where(Topic.id == topic_id).dicts().get()
 
-            topic_details['taskgroups'] = taskgroups.listall(topic_id, topic.taskgroups)
+    topic_details['taskgroups'] = taskgroups.listall(topic_id, topic.taskgroups)
 
-            courses = []
-            for module in database.modules:
-                if module.topic == topic.topic_id:
-                    for course in database.courses:
-                        if course.course_id == module.course:
-                            courses.append({'course_id': module.course, 'name': course.name})
-                            break
+    courses = []
+    '''
+    for module in database.modules:
+        if module.topic == topic.topic_id:
+            for course in database.courses:
+                if course.course_id == module.course:
+                    courses.append({'course_id': module.course, 'name': course.name})
+                    break
+    '''
+    topic_details['courses'] = courses
 
-            topic_details['courses'] = courses
-
-            return {'topic': topic_details, 'currentTime': time()}
+    return {'topic': topic_details, 'currentTime': time()}

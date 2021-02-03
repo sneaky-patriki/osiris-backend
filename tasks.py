@@ -3,7 +3,7 @@ from data_store import database, Task
 from error import InputError, AccessError
 
 def add(token, taskgroup_id, name, difficulty, type, description, hint, solution):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     task_id = database.generate_id('task')
 
@@ -23,7 +23,7 @@ def add(token, taskgroup_id, name, difficulty, type, description, hint, solution
     return new_task.json()
 
 def edit(token, task_id, name, difficulty, description, hint, solution, choices, correct_answers):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for task in database.tasks:
         if task.task_id == task_id:
@@ -47,7 +47,7 @@ def add_attachment(token, task_id, name, attachment):
     pass
 
 def delete(token, task_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for task in database.tasks:
         if task.task_id == task_id:
@@ -105,7 +105,7 @@ def listall(taskgroup_id, task_ids):
     return task_details
 
 def details(token, task_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for task in database.tasks:
         if task.task_id == task_id:

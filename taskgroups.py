@@ -4,7 +4,7 @@ from error import InputError, AccessError, DependencyError
 import tasks
 
 def add(token, topic_id, name, submit_multiple):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     taskgroup_id = database.generate_id('taskgroup')
 
@@ -19,7 +19,7 @@ def add(token, topic_id, name, submit_multiple):
     return new_taskgroup.json()
 
 def edit(token, taskgroup_id, name):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for taskgroup in database.taskgroups:
         if taskgroup.taskgroup_id == taskgroup_id:
@@ -31,7 +31,7 @@ def edit(token, taskgroup_id, name):
     return taskgroup.json()
 
 def move(token, taskgroup_id, new_topic_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for topic in database.topics:
         if taskgroup_id in topic.taskgroups:
@@ -49,7 +49,7 @@ def move(token, taskgroup_id, new_topic_id):
 
 
 def delete(token, taskgroup_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for task in database.tasks:
         if task.taskgroup_id == taskgroup_id:

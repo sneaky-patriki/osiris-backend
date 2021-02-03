@@ -5,7 +5,7 @@ from data_store import database, Submission, File
 from error import InputError
 
 def submit(token, tasks, files=[], selected_answer=-1):
-    database.authorise_user(token)
+    auth.authorise_user(token)
     submission_id = database.generate_id('submission')
     student = database.active_tokens[token]
 
@@ -56,7 +56,7 @@ def course_tasks(course_id):
     return tasks
 
 def listall(token, course_id, student_id=None):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     if student_id is None:
         student_id = database.active_tokens[token]
@@ -87,7 +87,7 @@ def listall(token, course_id, student_id=None):
 
 
 def details(token, submission_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for submission in database.submissions:
         if submission.submission_id == submission_id:
@@ -332,7 +332,7 @@ def tasks_progress(taskgroup_id, student_id):
     return progress
 
 def mark(token, submission_id, status):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for submission in database.submissions:
         if submission.submission_id == submission_id:
@@ -342,7 +342,7 @@ def mark(token, submission_id, status):
             return {}
 
 def add_comment(token, submission_id, comment):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for submission in database.submissions:
         if submission.submission_id == submission_id:

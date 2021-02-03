@@ -1,7 +1,7 @@
 import os
 
 from urllib.parse import urlparse
-from peewee import PostgresqlDatabase, Model, TextField, ForeignKeyField, DateTimeField, BooleanField
+from peewee import PostgresqlDatabase, SqliteDatabase, Model, TextField, ForeignKeyField, DateTimeField, BooleanField, IntegerField
 
 if 'HEROKU' in os.environ:
     url = urlparse(os.environ['DATABASE_URL'])
@@ -30,10 +30,6 @@ class User(OsirisEntity):
     user_type = TextField()
     name = TextField()
 
-class Enrolment(OsirisEntity):
-    user = ForeignKeyField(User)
-    cls = ForeignKeyField(Class)
-
 class Course(OsirisEntity):
     name = TextField()
     modified = DateTimeField()
@@ -42,6 +38,10 @@ class Class(OsirisEntity):
     name = TextField()
     course = ForeignKeyField(Course)
     year = IntegerField()
+
+class Enrolment(OsirisEntity):
+    user = ForeignKeyField(User)
+    cls = ForeignKeyField(Class)
 
 class Topic(OsirisEntity):
     name = TextField()
@@ -58,6 +58,9 @@ class Taskgroup(OsirisEntity):
     modified = DateTimeField()
     submit_multiple = BooleanField()
 
+class Choice(OsirisEntity):
+    content = TextField()
+
 class Task(OsirisEntity):
     taskgroup = ForeignKeyField(Taskgroup)
     name = TextField()
@@ -68,10 +71,6 @@ class Task(OsirisEntity):
     solution = TextField()
     modified = DateTimeField()
     correct_answer = ForeignKeyField(Choice, null=True)
-
-class Choice(OsirisEntity):
-    task = ForeignKeyField(Task)
-    content = TextField()
 
 class Attachment(OsirisEntity):
     task = ForeignKeyField(Task)
@@ -97,3 +96,8 @@ class File(OsirisEntity):
 class ActiveToken(OsirisEntity):
     user = ForeignKeyField(User)
     token = TextField()
+
+def main():
+    db.connect()
+    db.create_tables([User, Enrolment, Course, Class, Topic, Module, Taskgroup, Task, Choice, Attachment, Submission, TaskSubmission, File, ActiveToken])
+    db.close()

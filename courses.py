@@ -4,7 +4,7 @@ from error import InputError, AccessError, DependencyError
 import taskgroups
 
 def add(token, name):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     course_id = database.generate_id('course')
     new_course = Course(course_id, name)
@@ -16,7 +16,7 @@ def add(token, name):
     return new_course.json()
 
 def edit(token, course_id, name):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for course in database.courses:
         if course.course_id == course_id:
@@ -28,7 +28,7 @@ def edit(token, course_id, name):
             return {'course': course.json()}
 
 def delete(token, course_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for course in database.courses:
         if course.course_id == course_id:
@@ -47,7 +47,7 @@ def listall(token):
     return {'courses': [course.json() for course in database.courses], 'currentTime': time()}
 
 def details(token, course_id, class_id=None):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for course in database.courses:
         if course.course_id == course_id:
@@ -80,7 +80,7 @@ def details(token, course_id, class_id=None):
             return {'course': course_details}
 
 def add_topic(token, course_id, topic_id, name):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     module_id = database.generate_id('module')
     new_module = Module(module_id, topic_id, course_id, name)
@@ -100,7 +100,7 @@ def add_topic(token, course_id, topic_id, name):
     return {'module': new_module.json()}
 
 def rename_topic(token, module_id, name):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for module in database.modules:
         if module.module_id == module_id:
@@ -111,7 +111,7 @@ def rename_topic(token, module_id, name):
             return {'module': module.json()}
 
 def remove_topic(token, module_id):
-    database.authorise_user(token)
+    auth.authorise_user(token)
 
     for module in database.modules:
         if module.module_id == module_id:

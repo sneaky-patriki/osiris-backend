@@ -13,6 +13,7 @@ import tasks
 import attachments
 import classes
 import submissions
+import models
 
 app = Flask(__name__)
 CORS(app)
@@ -562,4 +563,5 @@ app.register_error_handler(Exception, default_handler)
 
 if __name__ == '__main__':
     # print(database.active_tokens)
+    models.main()
     app.run(port=5000)
